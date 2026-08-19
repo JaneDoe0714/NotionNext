@@ -327,15 +327,6 @@ const nextConfig = {
     : () => {
       return [
         {
-          source: '/vendor/fontawesome/:path*',
-          headers: [
-            {
-              key: 'Cache-Control',
-              value: 'public, max-age=31536000, immutable'
-            }
-          ]
-        },
-        {
           source: '/:path*{/}?',
           headers: [
             // 为了博客兼容性，不做过多安全限制
@@ -403,14 +394,6 @@ const nextConfig = {
       ]
     },
   webpack: (config, { dev, isServer }) => {
-    config.ignoreWarnings = [
-      ...(config.ignoreWarnings || []),
-      {
-        module: /[\\/]next[\\/]dist[\\/]esm[\\/]client[\\/]components[\\/]navigation\.js$/,
-        message: /useContext.*not exported from ['"]react['"]/i
-      }
-    ]
-
     // 动态主题：添加 resolve.alias 配置，将动态路径映射到实际路径
     config.resolve.alias['@'] = path.resolve(__dirname)
     config.resolve.alias['lodash.throttle'] = path.resolve(
