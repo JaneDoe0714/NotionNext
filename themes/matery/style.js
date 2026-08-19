@@ -1,6 +1,4 @@
 /* eslint-disable react/no-unknown-property */
-import CONFIG from './config'
-import { themeConsoleStyle } from '@/lib/themeConsoleStyle'
 /**
  * 此处样式只对当前主题生效
  * 此处不支持tailwindCSS的 @apply 语法
@@ -53,9 +51,7 @@ const Style = () => {
         scrollbar-width: thin;
         scrollbar-color: #4338ca transparent;
       }
-
-      ${themeConsoleStyle('matery', CONFIG)}
-  `}</style>
+    `}</style>
   )
 }
 

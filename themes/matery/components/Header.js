@@ -30,42 +30,54 @@ const Header = props => {
   const showSearchButton = siteConfig('MATERY_MENU_SEARCH', false, CONFIG)
 
   const router = useRouter()
-  const scrollTrigger = useCallback(
-    throttle(() => {
-      requestAnimationFrame(() => {
-        const scrollS = window.scrollY
-        const nav = document.querySelector('#sticky-nav')
-        const header = document.querySelector('#header')
-        const showNav =
-          scrollS <= windowTop ||
-          scrollS < 5 ||
-          (header && scrollS <= header.clientHeight * 2) // 非首页无大图时影藏顶部 滚动条置顶时隐藏// 非首页无大图时影藏顶部 滚动条置顶时隐藏
-        // 是否将导航栏透明
-        const navTransparent = header && scrollS < 300 // 透明导航条的条件
+const scrollTrigger = useCallback(
+  throttle(() => {
+    requestAnimationFrame(() => {
+      const scrollS = window.scrollY
+      const nav = document.querySelector('#sticky-nav')
+      const header = document.querySelector('#header')
 
-        if (navTransparent) {
-          nav && nav.classList.replace('bg-indigo-700', 'bg-none')
-          nav && nav.classList.replace('text-black', 'text-white')
-          nav && nav.classList.replace('shadow-xl', 'shadow-none')
-          nav && nav.classList.replace('dark:bg-hexo-black-gray', 'transparent')
-        } else {
-          nav && nav.classList.replace('bg-none', 'bg-indigo-700')
-          nav && nav.classList.replace('text-white', 'text-black')
-          nav && nav.classList.replace('shadow-none', 'shadow-xl')
-          nav && nav.classList.replace('transparent', 'dark:bg-hexo-black-gray')
+      // ✅ 新增：如果没有 Hero 大图（子页面），直接显示导航栏
+      if (!header) {
+        if (nav) {
+          nav.classList.remove('-top-20')
+          nav.classList.add('top-0')
+          nav.classList.add('bg-indigo-700')
+          nav.classList.remove('bg-none')
+          nav.classList.remove('transparent')
+          nav.classList.add('shadow-xl')
+          nav.classList.remove('shadow-none')
         }
+        return
+      }
 
-        if (!showNav) {
-          nav && nav.classList.replace('top-0', '-top-20')
-          windowTop = scrollS
-        } else {
-          nav && nav.classList.replace('-top-20', 'top-0')
-          windowTop = scrollS
-        }
-        navDarkMode()
-      })
-    }, throttleMs)
-  )
+      // 以下是原有逻辑（仅在有 header 的首页执行）
+      const showNav = header && scrollS <= header.clientHeight
+      const navTransparent = header && scrollS < header.clientHeight
+
+      if (navTransparent) {
+        nav && nav.classList.replace('bg-indigo-700', 'bg-none')
+        nav && nav.classList.replace('text-black', 'text-white')
+        nav && nav.classList.replace('shadow-xl', 'shadow-none')
+        nav && nav.classList.replace('dark:bg-hexo-black-gray', 'transparent')
+      } else {
+        nav && nav.classList.replace('bg-indigo-700', 'bg-none')
+        nav && nav.classList.replace('text-white', 'text-black')
+        nav && nav.classList.replace('shadow-none', 'shadow-xl')
+        nav && nav.classList.replace('transparent', 'dark:bg-hexo-black-gray')
+      }
+
+      if (!showNav) {
+        nav && nav.classList.replace('top-0', '-top-20')
+        windowTop = scrollS
+      } else {
+        nav && nav.classList.replace('-top-20', 'top-0')
+        windowTop = scrollS
+      }
+      navDarkMode()
+    })
+  }, throttleMs)
+)
 
   const navDarkMode = () => {
     const nav = document.getElementById('sticky-nav')

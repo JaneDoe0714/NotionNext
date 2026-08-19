@@ -29,7 +29,6 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import JumpToCommentButton from './components/JumpToCommentButton'
 import PostHero from './components/PostHero'
-import ReadingHome from './components/ReadingHome'
 import RightFloatButtons from './components/RightFloatButtons'
 import SearchNave from './components/SearchNav'
 import TagItemMiddle from './components/TagItemMiddle'
@@ -134,10 +133,13 @@ const LayoutBase = props => {
  * @returns
  */
 const LayoutIndex = props => {
-  if (siteConfig('MATERY_HOME_READING_LAYOUT', null, CONFIG)) {
-    return <ReadingHome {...props} />
-  }
-  return <LayoutPostList {...props} />
+  return (
+    <div className="text-center py-20 px-4">
+      <p className="text-gray-500 dark:text-gray-400">
+        <em>-宙斯的唇舌不知道杜撰谎言，他说的一切会全部实现。-</em>
+      </p>
+    </div>
+  )
 }
 
 /**
@@ -263,7 +265,7 @@ const LayoutSlug = props => {
               {/* 文章信息 */}
               {post?.type && post?.type === 'Post' && (
                 <>
-                  <div data-wow-delay='.2s' className='wow fadeInUp px-2 sm:px-6 lg:px-10'>
+                  <div data-wow-delay='.2s' className='wow fadeInUp px-10'>
                     <ArticleInfo post={post} />
                   </div>
                   <hr />
@@ -271,7 +273,7 @@ const LayoutSlug = props => {
               )}
 
               <div className='lg:px-10 subpixel-antialiased'>
-                <article id='article-wrapper'>
+                <article id='article-wrapper' itemScope>
                   {/* Notion文章主体 */}
                   <section
                     data-wow-delay='.1s'
@@ -302,9 +304,6 @@ const LayoutSlug = props => {
 
         {/* 底部文章推荐 */}
         {post?.type === 'Post' && <ArticleAdjacent {...props} />}
-
-        {/* 底部公告 */}
-        <Announcement {...props} />
 
         {/* 右侧文章目录 */}
         <CatalogWrapper post={post} />

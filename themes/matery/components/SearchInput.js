@@ -18,17 +18,16 @@ const SearchInput = props => {
   })
 
   const handleSearch = () => {
-    const key = searchInputRef.current.value
-    if (key && key !== '') {
-      setLoadingState(true)
-      router.push({ pathname: '/search/' + key }).then(r => {
-        setLoadingState(false)
-      })
-      // location.href = '/search/' + key
-    } else {
-      router.push({ pathname: '/' }).then(r => {})
-    }
+  const key = searchInputRef.current.value
+  if (key && key !== '') {
+    setLoadingState(true)
+    router.push({ pathname: '/search', query: { s: key } }).then(r => {
+      setLoadingState(false)
+    })
+  } else {
+    router.push({ pathname: '/' }).then(r => {})
   }
+}
   const handleKeyUp = e => {
     if (e.keyCode === 13) {
       // 回车
